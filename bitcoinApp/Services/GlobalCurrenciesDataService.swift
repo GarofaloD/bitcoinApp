@@ -13,15 +13,19 @@ import SwiftyJSON
 
 class GlobalCurrenciesDataService {
     
+    //MARK:- Singleton
     static let instance = GlobalCurrenciesDataService()
     
     
+    //MARK:- Properties
     var currCode = ""
     var currName = ""
     var currRate = 0.0
-    
     var currencies = [RegularCurrency]()
     
+    
+    
+    //MARK:- REST Calls
     func getGlobalCurrencies(completion: @escaping CompletionHandler){
         Alamofire.request(GLOBAL_CURRENCIES_URL, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil).responseJSON { (response) in
             
@@ -50,7 +54,6 @@ class GlobalCurrenciesDataService {
                     }
                 }
                 
-                print()
                 completion(true)
             } else {
                 completion(false)
