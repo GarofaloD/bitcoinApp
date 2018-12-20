@@ -12,6 +12,11 @@ class CurrencySelectionViewController: UIViewController, UITableViewDelegate, UI
 
     //MARK:- Properties
     @IBOutlet weak var tableView: UITableView!
+//    var selectedGlobalCurrency = ""
+//    var globalCurrencyValueForExchange : Double?
+    
+    var delegate: ChangeGlobalCurrency?
+    
     
     //MARK:- Outlets
 
@@ -38,8 +43,23 @@ class CurrencySelectionViewController: UIViewController, UITableViewDelegate, UI
         }
     }
 
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        <#code#>
-//    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cellCode = GlobalCurrenciesDataService.instance.getCurrencies()[indexPath.row].regularCurrencyCode
+        delegate?.selectedGlobalCurrency(code: cellCode)
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
+    @IBAction func returnWhenPressed(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    
 
 }

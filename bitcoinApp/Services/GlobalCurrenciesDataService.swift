@@ -51,9 +51,10 @@ class GlobalCurrenciesDataService {
                     
                         let currency = RegularCurrency(code: self.currCode, name: self.currName, rate: self.currRate)
                         self.currencies.append(currency)
+                        
                     }
                 }
-                
+                self.currencies.sort(by: {$0.regularCurrencyName < $1.regularCurrencyName})
                 completion(true)
             } else {
                 completion(false)

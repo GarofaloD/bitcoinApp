@@ -19,11 +19,11 @@ class CryptoCodeService {
     func translateCryptoCode(condition: String) -> String {
         switch (condition) {
         case "Bitcoin" :
-            return "BTCUSD"
+            return "BTC"
         case "Bitcoin Cash" :
-            return "BCHUSD"
+            return "BCH"
         case "Ethereum" :
-            return "ETHUSD"
+            return "ETH"
         default :
             return "dunno"
         }

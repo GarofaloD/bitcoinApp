@@ -13,9 +13,10 @@ typealias CompletionHandler = (_ Success: Bool) -> ()
 
 //URL CRYPTO CURRENCIES
 let BASE_URL = "https://apiv2.bitcoinaverage.com"
-let CRYPTO_VALUE_GET_URL = "\(BASE_URL)/indices/global/ticker"
+let CRYPTO_VALUE_GET_URL = "\(BASE_URL)/indices/global/ticker/short?"
 let GLOBAL_CURRENCIES_URL = "\(BASE_URL)/constants/exchangerates/global"
 let GET_CRYPTO_CURRENCIES_URL = "\(BASE_URL)/symbols/exchanges/ticker"
+
 
 
 //Coin Value
@@ -23,3 +24,9 @@ let LAST_VALUE = "last"
 
 //Crypto default
 let CRYPTO_DEFAULT = "cryptoDefault"
+
+//Protocols
+protocol ChangeGlobalCurrency {
+    func selectedGlobalCurrency(code: String)
+}
+
