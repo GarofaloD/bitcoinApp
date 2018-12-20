@@ -22,7 +22,10 @@ class BTCDisplayViewController: UIViewController, UIPickerViewDelegate, UIPicker
     
     //MARK:- Properties
     var currentCryptoOnPicker = "Bitcoin"
-    var selectedGlobalCurrency = "USD"
+    var globalCurrencyToBePassed = "USD"
+    //var updatedCode = ""
+    var updatedCurrencyName = "United States Dollar"
+    
     //Bitcoin (BTC), Bitcoin Cash (BCH), Litecoin (LTC), Ethereum (ETH)
     
     
@@ -34,7 +37,7 @@ class BTCDisplayViewController: UIViewController, UIPickerViewDelegate, UIPicker
 
 
         loadGlobalCurrencies()
-        //loadPrice()
+        loadPrice()
         
         currencyPicker.delegate = self
         currencyPicker.dataSource = self
@@ -61,62 +64,95 @@ class BTCDisplayViewController: UIViewController, UIPickerViewDelegate, UIPicker
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         currentCryptoOnPicker = CryptoCodeService.instance.cryptosToLoadOnPicker[row]
-        //loadPrice()
+        loadPrice()
         print(currentCryptoOnPicker)
     }
     
     
     
     
+    
+    
+    
+    
+    
+    
     //MARK:- Other Functions
     func loadPrice(){
-        CryptoCurrenciesDataService.instance.getCryptoCoinPrice(fullCryptoName: currentCryptoOnPicker, globalCurrencyCode: selectedGlobalCurrency) { (success) in
+        CryptoCurrenciesDataService.instance.getCryptoCoinPrice(fullCryptoName: currentCryptoOnPicker, globalCurrencyCode: globalCurrencyToBePassed) { (success) in
             if success {
-                self.updateView()
+                self.updateView(currencyCode: self.globalCurrencyToBePassed, currencyName: self.updatedCurrencyName)
             } else {
                 self.priceDisplay.text = "Fuck!"
             }
         }
     }
     
+    
+    
     func loadGlobalCurrencies(){
         GlobalCurrenciesDataService.instance.getGlobalCurrencies { (success) in
             if success {
-                print("Regular currencies loaded")
+                //print("Regular currencies loaded")
             }
         }
     }
     
-    func selectedGlobalCurrency(code: String) {
-        selectedGlobalCurrency = code
-        CryptoCurrenciesDataService.instance.getCryptoCoinPrice(fullCryptoName: currentCryptoOnPicker, globalCurrencyCode: selectedGlobalCurrency) { (success) in
+    func selectedGlobalCurrency(code: String, name: String){
+        globalCurrencyToBePassed = code
+        updatedCurrencyName = name
+        CryptoCurrenciesDataService.instance.getCryptoCoinPrice(fullCryptoName: currentCryptoOnPicker, globalCurrencyCode: globalCurrencyToBePassed) { (success) in
             if success {
-                self.updateView()
+                self.updateView(currencyCode: code, currencyName: name)
             } else {
                 self.priceDisplay.text = "??"
             }
         }
+        
     }
     
     
-    func updateView(){
+//    func updateView(){
+//
+//        let currencyFormatter = NumberFormatter()
+////        currencyFormatter.decimalSeparator = ","
+//        //currencyFormatter.maximumFractionDigits = 2
+//        currencyFormatter.numberStyle = .decimal
+//
+//        //let stringValue = String(CryptoCurrency.instance.value)
+//        if let valueToDisplay = currencyFormatter.string(from: CryptoCurrency.instance.value as NSNumber) {
+//            self.priceDisplay.text = "\(valueToDisplay)"
+//        }
+//
+//        self.currencyNameDisplay.text = "\(GlobalCurrenciesDataService.instance.currName)"
+//        self.codeDisplay.text = "\(GlobalCurrenciesDataService.instance.currCode)"
+//
+//        print(GlobalCurrenciesDataService.instance.currCode)
+//
+//    }
+    
+    func updateView(currencyCode: String, currencyName: String){
         
         let currencyFormatter = NumberFormatter()
-//        currencyFormatter.decimalSeparator = ","
+       // currencyFormatter.decimalSeparator = ","
         currencyFormatter.maximumFractionDigits = 2
+        currencyFormatter.minimumFractionDigits = 2
         currencyFormatter.numberStyle = .decimal
+        
         
         //let stringValue = String(CryptoCurrency.instance.value)
         if let valueToDisplay = currencyFormatter.string(from: CryptoCurrency.instance.value as NSNumber) {
             self.priceDisplay.text = "\(valueToDisplay)"
         }
         
-        self.currencyNameDisplay.text = "\(GlobalCurrenciesDataService.instance.currName)"
-        self.codeDisplay.text = "\(GlobalCurrenciesDataService.instance.currCode)"
+        self.currencyNameDisplay.text = "\(currencyName)"
+        self.codeDisplay.text = "(\(currencyCode))"
         
-        print(GlobalCurrenciesDataService.instance.currCode)
+        //print(currencyCode)
         
     }
+    
+    
  
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToCurrencySelection" {

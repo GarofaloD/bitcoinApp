@@ -27,6 +27,6 @@ let CRYPTO_DEFAULT = "cryptoDefault"
 
 //Protocols
 protocol ChangeGlobalCurrency {
-    func selectedGlobalCurrency(code: String)
+    func selectedGlobalCurrency(code: String, name: String)
 }
 

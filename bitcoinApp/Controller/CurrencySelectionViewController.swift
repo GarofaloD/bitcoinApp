@@ -46,7 +46,8 @@ class CurrencySelectionViewController: UIViewController, UITableViewDelegate, UI
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellCode = GlobalCurrenciesDataService.instance.getCurrencies()[indexPath.row].regularCurrencyCode
-        delegate?.selectedGlobalCurrency(code: cellCode)
+        let cellName = GlobalCurrenciesDataService.instance.getCurrencies()[indexPath.row].regularCurrencyName
+        delegate?.selectedGlobalCurrency(code: cellCode, name: cellName)
         dismiss(animated: true, completion: nil)
     }
     
